@@ -1,0 +1,12 @@
+:root {
+    --p-white: #e8e8e8;
+    --p-black: #6ab293;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+* {
+    margin: 0; 
+    padding: 0;
+}
