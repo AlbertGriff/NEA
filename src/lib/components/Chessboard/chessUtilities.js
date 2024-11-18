@@ -1,4 +1,4 @@
-import layouts from "./layouts.json"
+import layouts from "./layouts.json" with { type: "json"}
 
 const layout = layouts.default
 
@@ -29,6 +29,43 @@ const createBoard = (layout) => {
         return board.tiles[row][col]
     }
 
+
+    board.movePiece = (startPos, endPos) => {
+        const [startRow, startCol] = startPos
+        const [endRow, endCol] = endPos
+
+        const piece = board.tiles[startRow][startCol]
+
+
+        // Checks if the square is occupied
+        if (!piece) {
+            console.log("Empty square")
+            return false
+        }
+
+        // Checks to see if the target tile is the same as the current tile
+        if (startRow === endRow && startCol === endCol) {
+            console.log("Start and end positions are the same")
+            return false
+        }
+
+        // Checks to see if the tile is occupied by a piece of the same colour
+        const targetTile = board.tiles[endRow][endCol]
+        if (targetTile && targetTile.colour === piece.colour) {
+            console.log("Piece captures piece of same colour")
+            return false
+        }
+
+        // TODO: additional move validation for each piece
+
+        // Moves the piece
+        board.tiles[endRow][endCol] = { ...piece, position: [endRow, endCol] }
+        board.tiles[startRow][startCol] = null
+        console.log(`Moved piece ${piece.type} from [${startRow}, ${startCol}] to [${endRow}, ${endCol}]`);
+        return true
+
+    }
+
     return board
 }
 
@@ -51,3 +88,6 @@ const chessUtilities = {
 export default chessUtilities
 
 export { createBoard, Board }
+
+Board.movePiece([6, 4], [5, 4])
+Board.movePiece([5, 4], [4, 4])

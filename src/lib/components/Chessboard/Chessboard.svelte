@@ -3,7 +3,7 @@
 
     import Pawn from "./svg/pawn.svelte"
     import Rook from "./svg/rook.svelte"
-    import Knight from "./svg/kinght.svelte"
+    import Knight from "./svg/knight.svelte"
     import Bishop from "./svg/bishop.svelte"
     import Queen from "./svg/queen.svelte"
     import King from "./svg/king.svelte"
@@ -79,7 +79,7 @@
     }
 
     .piece__container {
-        /* makes em small */
+        /* Modifies size of pieces */
         padding: 0%;
     }
     
