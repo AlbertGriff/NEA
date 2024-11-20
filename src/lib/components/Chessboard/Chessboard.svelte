@@ -13,16 +13,38 @@
         return (row + col) % 2 === 0 ? "white" : "black"
     }
 
-    console.log(Board)
+
+    let startPosition = null
+    function handleDragStart(event, rowIdx, colIdx) {
+        startPosition = [rowIdx, colIdx]
+        event.dataTransfer.setData("text/plain", JSON.stringify(startPosition))
+    }
+    
+    function handleDrop(event, rowIdx, colIdx) {
+        const endPosition = [rowIdx, colIdx]
+        const startPosition = JSON.parse(event.dataTransfer.getData("text/plain"))
+        Board.movePiece(startPosition, endPosition)
+        Board.tiles = [...Board.tiles]
+    }
+
 </script>
 
 <table>
     {#each Board.tiles as row, rowIdx}
         <tr>
             {#each row as tile, colIdx}
-                <td class={getTileColour(rowIdx, colIdx)}>
+                <td 
+                    class={getTileColour(rowIdx, colIdx)}
+                    on:dragover={(event) => event.preventDefault()}
+                    on:drop={(event) => handleDrop(event, rowIdx, colIdx)}
+                >
                     {#if tile}
-                        <div class={"piece__container " + (tile.colour === "w" ? "white" : "black")}>
+                        <!-- svelte-ignore a11y-no-static-element-interactions -->
+                        <div 
+                            class={"piece__container " + (tile.colour === "w" ? "white" : "black")}
+                            draggable = "true"
+                            on:dragstart={(event) => handleDragStart(event, rowIdx, colIdx)}
+                        >
                             {#if tile.type === "P"}
                                 <Pawn/> 
                             {:else if tile.type === "R"}

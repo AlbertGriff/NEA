@@ -77,7 +77,6 @@ const createPiece = (type, colour, position) => {
     }
 }
 
-
 const Board = createBoard(layout)
 
 const chessUtilities = {
@@ -88,6 +87,3 @@ const chessUtilities = {
 export default chessUtilities
 
 export { createBoard, Board }
-
-Board.movePiece([6, 4], [5, 4])
-Board.movePiece([5, 4], [4, 4])
