@@ -1,18 +1,9 @@
-<svg viewBox="0 0 100 100" enable-background="new 0 0 100 100">
-	<g>
-		<g>
-			<path class="colour" stroke-width="4" stroke-miterlimit="10" d="M73,89c0,2.2-1.8,4-4,4H31c-2.2,0-4-1.8-4-4l0,0 c0-2.2,1.8-4,4-4h38C71.2,85,73,86.8,73,89L73,89z"/>
-		</g>
-		<g>
-			<path class="colour" stroke-width="4" stroke-miterlimit="10" d="M63,36c0,1.65-1.35,3-3,3H40c-1.65,0-3-1.35-3-3 l0,0c0-1.65,1.35-3,3-3h20C61.65,33,63,34.35,63,36L63,36z"/>
-		</g>
-		<g>
-			<path class="colour" stroke-width="4" stroke-miterlimit="10" d="M68,82c0,1.65-1.35,3-3,3H35c-1.65,0-3-1.35-3-3 l0,0c0-1.65,1.35-3,3-3h30C66.65,79,68,80.35,68,82L68,82z"/>
-		</g>
-		<polygon class="colour" stroke-width="4" stroke-miterlimit="10" points="63,20 59,33 41,33 37,20 50,15 	"/>
-		<line class="colour" stroke-width="4" stroke-miterlimit="10" x1="50" y1="15" x2="50" y2="5"/>
-		<line class="colour" stroke-width="4" stroke-miterlimit="10" x1="46" y1="9" x2="54" y2="9"/>
-		<line class="colour" stroke-width="4" stroke-miterlimit="10" x1="38" y1="23" x2="62" y2="23"/>
-		<path class="colour" stroke-width="4" stroke-miterlimit="10" d="M62.61,79c-0.946-6.487-3.306-10.059-3.583-40 H40.973c-0.277,29.941-2.637,33.513-3.583,40H62.61z"/>
-	</g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="45" height="45">
+  <g fill="none" fill-rule="evenodd" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+    <path stroke-linejoin="miter" d="M22.5 11.63V6M20 8h5"/>
+    <path fill="#fff" stroke-linecap="butt" stroke-linejoin="miter" d="M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5"/>
+    <path fill="#fff" d="M12.5 37c5.5 3.5 14.5 3.5 20 0v-7s9-4.5 6-10.5c-4-6.5-13.5-3.5-16 4V27v-3.5c-2.5-7.5-12-10.5-16-4-3 6 6 10.5 6 10.5v7"/>
+    <path d="M12.5 30c5.5-3 14.5-3 20 0m-20 3.5c5.5-3 14.5-3 20 0m-20 3.5c5.5-3 14.5-3 20 0"/>
+  </g>
 </svg>
