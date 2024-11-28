@@ -1,12 +1,19 @@
 <script>
     import { Board } from "./chessUtilities"
 
-    import Pawn from "./svg/pawn.svelte"
-    import Rook from "./svg/rook.svelte"
-    import Knight from "./svg/knight.svelte"
-    import Bishop from "./svg/bishop.svelte"
-    import Queen from "./svg/queen.svelte"
-    import King from "./svg/king.svelte"
+    import wPawn from "./svg/white/wPawn.svelte"
+    import wRook from "./svg/white/wRook.svelte"
+    import wKnight from "./svg/white/wKnight.svelte"
+    import wBishop from "./svg/white/wBishop.svelte"
+    import wQueen from "./svg/white/wQueen.svelte"
+    import wKing from "./svg/white/wKing.svelte"
+
+    import bPawn from "./svg/black/bPawn.svelte"
+    import bRook from "./svg/black/bRook.svelte"
+    import bKnight from "./svg/black/bKnight.svelte"
+    import bBishop from "./svg/black/bBishop.svelte"
+    import bQueen from "./svg/black/bQueen.svelte"
+    import bKing from "./svg/black/bKing.svelte"
 
 
     const getTileColour = (row, col) => {
@@ -46,17 +53,41 @@
                             on:dragstart={(event) => handleDragStart(event, rowIdx, colIdx)}
                         >
                             {#if tile.type === "P"}
-                                <Pawn/> 
+                                {#if tile.colour === "w"}
+                                    <wPawn/> 
+                                {:else}
+                                    <bPawn/>
+                                {/if}
                             {:else if tile.type === "R"}
-                                <Rook/>
+                                {#if tile.colour === "w"}
+                                    <wRook/> 
+                                {:else}
+                                    <bRook/>
+                                {/if}
                             {:else if tile.type === "N"}
-                                <Knight/>
+                                {#if tile.colour === "w"}
+                                    <wKnight/> 
+                                {:else}
+                                    <bKnight/>
+                                {/if}
                             {:else if tile.type === "B"}
-                                <Bishop/>
+                                {#if tile.colour === "w"}
+                                    <wBishop/> 
+                                {:else}
+                                    <bBishop/>
+                                {/if}
                             {:else if tile.type === "Q"}
-                                <Queen/>
+                                {#if tile.colour === "w"}
+                                    <wQueen/> 
+                                {:else}
+                                    <bQueen/>
+                                {/if}
                             {:else if tile.type === "K"}
-                                <King/>
+                                {#if tile.colour === "w"}
+                                    <wKing/> 
+                                {:else}
+                                    <bKing/>
+                                {/if}
                             {/if}
                         </div>
                     {/if}
@@ -108,13 +139,5 @@
     .piece__container > :global(svg) {
         width: 100%;
         height: 100%;
-    }
-    .piece__container.white > :global(svg .colour) {
-        stroke: var(--p-black);
-        fill: var(--p-white);
-    }
-    .piece__container.black > :global(svg .colour) {
-        stroke: var(--p-white);
-        fill: var(--p-black);
     }
 </style>
