@@ -1,19 +1,19 @@
 <script>
     import { Board } from "./chessUtilities"
 
-    import wPawn from "./svg/white/wPawn.svelte"
-    import wRook from "./svg/white/wRook.svelte"
-    import wKnight from "./svg/white/wKnight.svelte"
-    import wBishop from "./svg/white/wBishop.svelte"
-    import wQueen from "./svg/white/wQueen.svelte"
-    import wKing from "./svg/white/wKing.svelte"
+    import WPawn from "./svg/white/wPawn.svelte"
+    import WRook from "./svg/white/wRook.svelte"
+    import WKnight from "./svg/white/wKnight.svelte"
+    import WBishop from "./svg/white/wBishop.svelte"
+    import WQueen from "./svg/white/wQueen.svelte"
+    import WKing from "./svg/white/wKing.svelte"
 
-    import bPawn from "./svg/black/bPawn.svelte"
-    import bRook from "./svg/black/bRook.svelte"
-    import bKnight from "./svg/black/bKnight.svelte"
-    import bBishop from "./svg/black/bBishop.svelte"
-    import bQueen from "./svg/black/bQueen.svelte"
-    import bKing from "./svg/black/bKing.svelte"
+    import BPawn from "./svg/black/bPawn.svelte"
+    import BRook from "./svg/black/bRook.svelte"
+    import BKnight from "./svg/black/bKnight.svelte"
+    import BBishop from "./svg/black/bBishop.svelte"
+    import BQueen from "./svg/black/bQueen.svelte"
+    import BKing from "./svg/black/bKing.svelte"
 
 
     const getTileColour = (row, col) => {
@@ -54,39 +54,39 @@
                         >
                             {#if tile.type === "P"}
                                 {#if tile.colour === "w"}
-                                    <wPawn/> 
+                                    <WPawn/> 
                                 {:else}
-                                    <bPawn/>
+                                    <BPawn/>
                                 {/if}
                             {:else if tile.type === "R"}
                                 {#if tile.colour === "w"}
-                                    <wRook/> 
+                                    <WRook/> 
                                 {:else}
-                                    <bRook/>
+                                    <BRook/>
                                 {/if}
                             {:else if tile.type === "N"}
                                 {#if tile.colour === "w"}
-                                    <wKnight/> 
+                                    <WKnight/> 
                                 {:else}
-                                    <bKnight/>
+                                    <BKnight/>
                                 {/if}
                             {:else if tile.type === "B"}
                                 {#if tile.colour === "w"}
-                                    <wBishop/> 
+                                    <WBishop/> 
                                 {:else}
-                                    <bBishop/>
+                                    <BBishop/>
                                 {/if}
                             {:else if tile.type === "Q"}
                                 {#if tile.colour === "w"}
-                                    <wQueen/> 
+                                    <WQueen/> 
                                 {:else}
-                                    <bQueen/>
+                                    <BQueen/>
                                 {/if}
                             {:else if tile.type === "K"}
                                 {#if tile.colour === "w"}
-                                    <wKing/> 
+                                    <WKing/> 
                                 {:else}
-                                    <bKing/>
+                                    <BKing/>
                                 {/if}
                             {/if}
                         </div>

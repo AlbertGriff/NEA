@@ -1,6 +1,6 @@
 import layouts from "./layouts.json" with { type: "json"}
 
-const layout = layouts.default
+const layout = layouts.testing
 
 
 
@@ -55,8 +55,15 @@ const createBoard = (layout) => {
             console.log("Piece captures piece of same colour")
             return false
         }
-
-        // TODO: additional move validation for each piece
+        
+        const validMoves = getValidMoves(piece, [startRow, startCol], board)
+        console.log(validMoves)
+        const isValidMove = validMoves.some(([row, col]) => row === endRow && col === endCol)
+        if (!isValidMove) {
+            console.log("Invalid piece move")
+            return false
+        }
+        
 
         // Moves the piece
         board.tiles[endRow][endCol] = { ...piece, position: [endRow, endCol] }
@@ -69,11 +76,31 @@ const createBoard = (layout) => {
     return board
 }
 
+const getValidMoves = (piece, [row, col], board) => {
+    switch (piece.type) {
+        case "P":
+            return getPawnMoves([row, col], board)
+        case "R":
+            return getRookMoves([row, col], board)
+        case "K":
+            return getKnightMoves([row, col], board)
+        case "B":
+            return getBishopMoves([row, col], board)
+        case "Q":
+            return getQueenMoves([row, col], board)
+        case "K":
+            return getKingMoves([row, col], board)
+        default:
+            return []
+    }
+}
+
 const createPiece = (type, colour, position) => {
     return {
         type,
         colour,
-        position
+        position,
+        hasMoved: false,
     }
 }
 
