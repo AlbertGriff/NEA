@@ -88,7 +88,7 @@ const getValidMoves = (piece, [row, col], board) => {
             return calculateMoves([row, col], rookDirections, rookRepeated, board)
         case "N": // Knights
             const knightDirections = [
-                [3,1],[3,-1],[-3,1],[-3,-1],[1,3],[-1,3],[1,-3],[-1,-3]
+                [2,1],[2,-1],[-2,1],[-2,-1],[1,2],[-1,2],[1,-2],[-1,-2]
             ]
             const knightRepeated = false
             return calculateMoves([row, col], knightDirections, knightRepeated, board)
@@ -125,17 +125,18 @@ const createPiece = (type, colour, position) => {
 
 const Board = createBoard(layout)
 
-const calculateMoves([row, col], directions, repeated, board) => {
+const calculateMoves = (startPosition, directions, repeated, board) => {
+    const [startRow, startCol] = startPosition
     const validMoves = []
-    const pieceColour = board.checkTile([row,col]).colour
-    const onBoard = (row, col) => row >=0 && row < 7 && col >= 0 && col < 7
+    const pieceColour = board.checkTile(startRow,startCol).colour
 
-    for (const [dirRow, dirCol] of directions) {
+    for (let direction of directions) {
+        let [dirRow, dirCol] = direction
         let currentRow = startRow + dirRow
         let currentCol = startCol+ dirCol
 
-        while (onBoard(currentRow, currentCol)) {
-            const targetPiece = board.checkTile([currentRow][currentCol])
+        while (currentRow >=0 && currentRow <= 7 && currentCol >= 0 && currentCol <= 7) {
+            const targetPiece = board.checkTile(currentRow,currentCol)
             if (targetPiece) {
                 if (targetPiece.colour !== pieceColour) {
                     validMoves.push([currentRow,currentCol])
