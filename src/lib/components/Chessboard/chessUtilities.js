@@ -78,18 +78,38 @@ const createBoard = (layout) => {
 
 const getValidMoves = (piece, [row, col], board) => {
     switch (piece.type) {
-        case "P":
+        case "P": // Pawns
             return getPawnMoves([row, col], board)
-        case "R":
-            return getRookMoves([row, col], board)
-        case "K":
-            return getKnightMoves([row, col], board)
-        case "B":
-            return getBishopMoves([row, col], board)
-        case "Q":
-            return getQueenMoves([row, col], board)
-        case "K":
-            return getKingMoves([row, col], board)
+        case "R": // Rooks
+            const directions = [
+                [1,0],[-1,0],[0,1],[0,-1]
+            ]
+            repeated = true
+            return calculateMoves([row, col], directions, repeated, board)
+        case "N": // Knights
+            const directions = [
+                [3,1],[3,-1],[-3,1],[-3,-1],[1,3],[-1,3],[1,-3],[-1,-3]
+            ]
+            repeated = false
+            return calculateMoves([row, col], directions, repeated, board)
+        case "B": // Bishops
+            const directions = [
+                [1,1],[-1,1],[1,-1],[-1,-1]
+            ]
+            repeated = true
+            return calculateMoves([row, col], directions, repeated, board)
+        case "Q": // Queens
+            const directions = [
+                [1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]
+            ]
+            repeated = true
+            return calculateMoves([row, col], directions, repeated, board)
+        case "K": // Kings
+            const directions = [
+                [1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]
+            ]
+            repeated = false
+            return calculateMoves([row, col], directions, repeated, board)
         default:
             return []
     }
