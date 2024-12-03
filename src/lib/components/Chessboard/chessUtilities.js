@@ -81,35 +81,35 @@ const getValidMoves = (piece, [row, col], board) => {
         case "P": // Pawns
             return getPawnMoves([row, col], board)
         case "R": // Rooks
-            const directions = [
+            const rookDirections = [
                 [1,0],[-1,0],[0,1],[0,-1]
             ]
-            repeated = true
-            return calculateMoves([row, col], directions, repeated, board)
+            const rookRepeated = true
+            return calculateMoves([row, col], rookDirections, rookRepeated, board)
         case "N": // Knights
-            const directions = [
+            const knightDirections = [
                 [3,1],[3,-1],[-3,1],[-3,-1],[1,3],[-1,3],[1,-3],[-1,-3]
             ]
-            repeated = false
-            return calculateMoves([row, col], directions, repeated, board)
+            const knightRepeated = false
+            return calculateMoves([row, col], knightDirections, knightRepeated, board)
         case "B": // Bishops
-            const directions = [
+            const bishopDirections = [
                 [1,1],[-1,1],[1,-1],[-1,-1]
             ]
-            repeated = true
-            return calculateMoves([row, col], directions, repeated, board)
+            const bishopRepeated = true
+            return calculateMoves([row, col], bishopDirections, bishopRepeated, board)
         case "Q": // Queens
-            const directions = [
+            const queenDirections = [
                 [1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]
             ]
-            repeated = true
-            return calculateMoves([row, col], directions, repeated, board)
+            const queenRepeated = true
+            return calculateMoves([row, col], queenDirections, queenRepeated, board)
         case "K": // Kings
-            const directions = [
+            const kingDirections = [
                 [1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]
             ]
-            repeated = false
-            return calculateMoves([row, col], directions, repeated, board)
+            const kingRepeated = false
+            return calculateMoves([row, col], kingDirections, kingRepeated, board)
         default:
             return []
     }
@@ -120,11 +120,40 @@ const createPiece = (type, colour, position) => {
         type,
         colour,
         position,
-        hasMoved: false,
     }
 }
 
 const Board = createBoard(layout)
+
+const calculateMoves([row, col], directions, repeated, board) => {
+    const validMoves = []
+    const pieceColour = board.checkTile([row,col]).colour
+    const onBoard = (row, col) => row >=0 && row < 7 && col >= 0 && col < 7
+
+    for (const [dirRow, dirCol] of directions) {
+        let currentRow = startRow + dirRow
+        let currentCol = startCol+ dirCol
+
+        while (onBoard(currentRow, currentCol)) {
+            const targetPiece = board.checkTile([currentRow][currentCol])
+            if (targetPiece) {
+                if (targetPiece.colour !== pieceColour) {
+                    validMoves.push([currentRow,currentCol])
+                }
+                break
+            }
+            validMoves.push([currentRow, currentCol])
+
+            if (!repeated) {
+                break
+            }
+
+            currentRow += dirRow
+            currentCol += dirCol
+        }
+    }
+    return validMoves
+}
 
 const chessUtilities = {
     createBoard, 
