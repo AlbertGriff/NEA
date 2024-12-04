@@ -56,7 +56,7 @@ const createBoard = (layout) => {
             return false
         }
         
-        const validMoves = getValidMoves(piece, [startRow, startCol], board)
+        const validMoves = getValidMoves([startRow, startCol], board)
         console.log(validMoves)
         const isValidMove = validMoves.some(([row, col]) => row === endRow && col === endCol)
         if (!isValidMove) {
@@ -76,7 +76,8 @@ const createBoard = (layout) => {
     return board
 }
 
-const getValidMoves = (piece, [row, col], board) => {
+const getValidMoves = ([row, col], board) => {
+    const piece = board.checkTile(row, col)
     switch (piece.type) {
         case "P": // Pawns
             return getPawnMoves([row, col], board)
@@ -158,9 +159,11 @@ const calculateMoves = (startPosition, directions, repeated, board) => {
 
 const chessUtilities = {
     createBoard, 
-    Board
+    Board,
+    getValidMoves,
+    calculateMoves
 }
 
 export default chessUtilities
 
-export { createBoard, Board }
+export { createBoard, Board, getValidMoves, calculateMoves }

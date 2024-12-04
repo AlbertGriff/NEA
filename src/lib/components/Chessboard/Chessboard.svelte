@@ -1,5 +1,6 @@
 <script>
     import { Board } from "./chessUtilities"
+    import { getValidMoves } from "./chessUtilities"
 
     import WPawn from "./svg/white/wPawn.svelte"
     import WRook from "./svg/white/wRook.svelte"
@@ -20,11 +21,16 @@
         return (row + col) % 2 === 0 ? "white" : "black"
     }
 
-
+    let highlightedTiles = []
     let startPosition = null
     function handleDragStart(event, rowIdx, colIdx) {
         startPosition = [rowIdx, colIdx]
         event.dataTransfer.setData("text/plain", JSON.stringify(startPosition))
+        console.log("Checking valid moves")
+        const validMoves = getValidMoves([rowIdx, colIdx], Board)
+        console.log(validMoves)
+        highlightedTiles = validMoves
+        console.log(highlightedTiles)
     }
     
     function handleDrop(event, rowIdx, colIdx) {
@@ -32,6 +38,11 @@
         const startPosition = JSON.parse(event.dataTransfer.getData("text/plain"))
         Board.movePiece(startPosition, endPosition)
         Board.tiles = [...Board.tiles]
+
+    }
+
+    function handleDragEnd() {
+        highlightedTiles = []
     }
 
 </script>
@@ -44,13 +55,18 @@
                     class={getTileColour(rowIdx, colIdx)}
                     on:dragover={(event) => event.preventDefault()}
                     on:drop={(event) => handleDrop(event, rowIdx, colIdx)}
-                >
+                >   
+                    {#if highlightedTiles.some(([r, c]) => r === rowIdx && c === colIdx)}
+                        <div class="highlight-circle"></div>
+                    {/if}
+
                     {#if tile}
                         <!-- svelte-ignore a11y-no-static-element-interactions -->
                         <div 
                             class={"piece__container " + (tile.colour === "w" ? "white" : "black")}
                             draggable = "true"
                             on:dragstart={(event) => handleDragStart(event, rowIdx, colIdx)}
+                            on:dragend={handleDragEnd()}
                         >
                             {#if tile.type === "P"}
                                 {#if tile.colour === "w"}
@@ -121,7 +137,18 @@
     td.black {
         background-color: #e8e8e8;
     }
-
+    .highlight-circle {
+        width: 50%;
+        height: 50%;
+        background-color: rgba(0,255,0,0.5);
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 1;
+    }
     td > * {
         position: absolute;
         inset: 0;
