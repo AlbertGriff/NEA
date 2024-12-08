@@ -24,11 +24,12 @@
     let highlightedTiles = []
     let startPosition = null
     function handleDragStart(event, rowIdx, colIdx) {
+        // Saves the piece which is being dragged
         startPosition = [rowIdx, colIdx]
         event.dataTransfer.setData("text/plain", JSON.stringify(startPosition))
+        // Records the valid moves 
         console.log("Checking valid moves")
         const validMoves = getValidMoves([rowIdx, colIdx], Board)
-        console.log(validMoves)
         highlightedTiles = validMoves
         console.log(highlightedTiles)
     }
@@ -40,11 +41,6 @@
         Board.tiles = [...Board.tiles]
 
     }
-
-    function handleDragEnd() {
-        highlightedTiles = []
-    }
-
 </script>
 
 <table>
@@ -56,7 +52,7 @@
                     on:dragover={(event) => event.preventDefault()}
                     on:drop={(event) => handleDrop(event, rowIdx, colIdx)}
                 >   
-                    {#if highlightedTiles.some(([r, c]) => r === rowIdx && c === colIdx)}
+                    {#if highlightedTiles.some(rowIdx, colIdx)}
                         <div class="highlight-circle"></div>
                     {/if}
 
@@ -66,7 +62,6 @@
                             class={"piece__container " + (tile.colour === "w" ? "white" : "black")}
                             draggable = "true"
                             on:dragstart={(event) => handleDragStart(event, rowIdx, colIdx)}
-                            on:dragend={handleDragEnd()}
                         >
                             {#if tile.type === "P"}
                                 {#if tile.colour === "w"}

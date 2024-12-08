@@ -134,7 +134,7 @@ const calculateMoves = (startPosition, directions, repeated, board) => {
     for (let direction of directions) {
         let [dirRow, dirCol] = direction
         let currentRow = startRow + dirRow
-        let currentCol = startCol+ dirCol
+        let currentCol = startCol + dirCol
 
         while (currentRow >=0 && currentRow <= 7 && currentCol >= 0 && currentCol <= 7) {
             const targetPiece = board.checkTile(currentRow,currentCol)
