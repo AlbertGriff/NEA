@@ -157,6 +157,28 @@ const calculateMoves = (startPosition, directions, repeated, board) => {
     return validMoves
 }
 
+const getPawnMoves = (startPosition, board) => {
+    const [startRow, startCol] = startPosition
+    const validMoves = []
+    var direction = null
+    const pawnColour = board.checkTile(startRow,startCol).colour
+    if (pawnColour === "w") {
+        direction = -1
+    } else {
+        direction = 1
+    }
+    let currentCol = startCol + direction
+    let targetPiece = board.checkTile(startRow, currentCol)
+    if (!targetPiece && startRow >=0 && startRow <= 7 && currentCol >= 0 && currentCol <= 7) {
+        validMoves.push([startRow, currentCol])
+        if ((pawnColour === "w" && startRow === 6) || (pawnColour === "b" && startRow === 1)) {
+            currentCol += direction
+            
+        }
+    }
+    
+}
+
 const chessUtilities = {
     createBoard, 
     Board,
