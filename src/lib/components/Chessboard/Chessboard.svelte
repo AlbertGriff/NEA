@@ -37,15 +37,24 @@
         const endPosition = [rowIdx, colIdx]
         const startPosition = JSON.parse(event.dataTransfer.getData("text/plain"))
         Board.movePiece(startPosition, endPosition)
+        highlightedTiles = []
         Board.tiles = [...Board.tiles]
 
     }
 
-    function handleDragEnd() {
-        highlightedTiles = []
+    function takeBackMove() {
+        Board.takeBack()
+        Board.tiles = [...Board.tiles]
     }
 
 </script>
+
+<div class="controls">
+    <button on:click={takeBackMove}>
+        Take back previous move
+    </button>
+</div>
+
 
 <table>
     {#each Board.tiles as row, rowIdx}
@@ -66,7 +75,6 @@
                             class={"piece__container " + (tile.colour === "w" ? "white" : "black")}
                             draggable = "true"
                             on:dragstart={(event) => handleDragStart(event, rowIdx, colIdx)}
-                            on:dragend={handleDragEnd()}
                         >
                             {#if tile.type === "P"}
                                 {#if tile.colour === "w"}
@@ -114,6 +122,18 @@
 </table>
 
 <style>
+    .controls {
+        margin-bottom: 10px;
+    }
+    .controls button {
+        padding: 8px 12px;
+        font-size: 50px;
+        cursor: pointer;
+        background-color: antiquewhite;
+        color: black;
+    }
+
+
     table {
         width: 100%;
         aspect-ratio: 1/1;
