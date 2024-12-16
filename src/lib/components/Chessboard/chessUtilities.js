@@ -182,7 +182,7 @@ const calculateMoves = (startPosition, directions, repeated, board) => {
     for (let direction of directions) {
         let [dirRow, dirCol] = direction
         let currentRow = startRow + dirRow
-        let currentCol = startCol+ dirCol
+        let currentCol = startCol + dirCol
 
         while (currentRow >=0 && currentRow <= 7 && currentCol >= 0 && currentCol <= 7) {
             const targetPiece = board.checkTile(currentRow,currentCol)
@@ -208,6 +208,7 @@ const calculateMoves = (startPosition, directions, repeated, board) => {
 const getPawnMoves = (startPosition, board) => {
     const [startRow, startCol] = startPosition
     const validMoves = []
+
     const pawn = board.checkTile(startRow, startCol)
     
     const direction = pawn.colour === "w" ? -1 : 1
@@ -245,6 +246,7 @@ const getPawnMoves = (startPosition, board) => {
 
     return validMoves
 }
+
 
 
 

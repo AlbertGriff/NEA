@@ -24,11 +24,12 @@
     let highlightedTiles = []
     let startPosition = null
     function handleDragStart(event, rowIdx, colIdx) {
+        // Saves the piece which is being dragged
         startPosition = [rowIdx, colIdx]
         event.dataTransfer.setData("text/plain", JSON.stringify(startPosition))
+        // Records the valid moves 
         console.log("Checking valid moves")
         const validMoves = getValidMoves([rowIdx, colIdx], Board)
-        console.log(validMoves)
         highlightedTiles = validMoves
         console.log(highlightedTiles)
     }
@@ -65,7 +66,7 @@
                     on:dragover={(event) => event.preventDefault()}
                     on:drop={(event) => handleDrop(event, rowIdx, colIdx)}
                 >   
-                    {#if highlightedTiles.some(([r, c]) => r === rowIdx && c === colIdx)}
+                    {#if highlightedTiles.some(rowIdx, colIdx)}
                         <div class="highlight-circle"></div>
                     {/if}
 
