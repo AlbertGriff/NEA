@@ -1,6 +1,6 @@
 import layouts from "./layouts.json" with { type: "json"}
 
-const layout = layouts.testing
+const layout = layouts.default
 
 
 
@@ -16,6 +16,11 @@ const createBoard = (layout) => {
     }    
     board.tiles = tiles
     
+    board.currentTurn = "w"
+
+    board.moves = []
+
+
     for (let row = 0; row < 8; row++) {
         for (let col = 0; col < 8; col++) {
             if (layout[row][col]) {
@@ -28,7 +33,28 @@ const createBoard = (layout) => {
     board.checkTile = (row, col) => {
         return board.tiles[row][col]
     }
+    
+    board.takeBack = () => {
+        if (board.moves.length === 0) {
+            console.log("No moves")
+            return false
+        }
+        const previousMove = board.moves.pop()
+        const {piece, from, to, capture} = previousMove
 
+        const [startRow, startCol] = from
+        const [endRow, endCol] = to
+        board.tiles[startRow][startCol] = { ...piece, position: from }
+        if (capture) {
+            board.tiles[endRow][endCol] = { ...capture, position: to}
+        } else {
+            board.tiles[endRow][endCol] = null
+        }
+        
+
+        board.currentTurn = piece.colour
+        return true
+    }
 
     board.movePiece = (startPos, endPos) => {
         const [startRow, startCol] = startPos
@@ -55,7 +81,13 @@ const createBoard = (layout) => {
             console.log("Piece captures piece of same colour")
             return false
         }
-        
+        // Checks to see which players turn it is
+        if (board.currentTurn !== piece.colour) {
+            console.log("Wrong players turn")
+            return false
+        }
+
+
         const validMoves = getValidMoves([startRow, startCol], board)
         console.log(validMoves)
         const isValidMove = validMoves.some(([row, col]) => row === endRow && col === endCol)
@@ -64,11 +96,25 @@ const createBoard = (layout) => {
             return false
         }
         
+        const moveInfo = {
+            piece: piece,
+            from: startPos,
+            to: endPos,
+            capture: targetTile,
+        }
+        board.moves.push(moveInfo)
+        console.log(moveInfo)
 
         // Moves the piece
         board.tiles[endRow][endCol] = { ...piece, position: [endRow, endCol] }
         board.tiles[startRow][startCol] = null
-        console.log(`Moved piece ${piece.type} from [${startRow}, ${startCol}] to [${endRow}, ${endCol}]`);
+        console.log(`Moved piece ${piece.type} from [${startRow}, ${startCol}] to [${endRow}, ${endCol}]`)
+        if (board.currentTurn === "w") {
+            board.currentTurn = "b"
+        } else {
+            board.currentTurn = "w"
+        }
+
         return true
 
     }
@@ -78,39 +124,41 @@ const createBoard = (layout) => {
 
 const getValidMoves = ([row, col], board) => {
     const piece = board.checkTile(row, col)
+    var directions = []
+    var repeated = false
     switch (piece.type) {
         case "P": // Pawns
             return getPawnMoves([row, col], board)
         case "R": // Rooks
-            const rookDirections = [
+            directions = [
                 [1,0],[-1,0],[0,1],[0,-1]
             ]
-            const rookRepeated = true
-            return calculateMoves([row, col], rookDirections, rookRepeated, board)
+            repeated = true
+            return calculateMoves([row, col], directions, repeated, board)
         case "N": // Knights
-            const knightDirections = [
+            directions = [
                 [2,1],[2,-1],[-2,1],[-2,-1],[1,2],[-1,2],[1,-2],[-1,-2]
             ]
-            const knightRepeated = false
-            return calculateMoves([row, col], knightDirections, knightRepeated, board)
+            repeated = false
+            return calculateMoves([row, col], directions, repeated, board)
         case "B": // Bishops
-            const bishopDirections = [
+            directions = [
                 [1,1],[-1,1],[1,-1],[-1,-1]
             ]
-            const bishopRepeated = true
-            return calculateMoves([row, col], bishopDirections, bishopRepeated, board)
+            repeated = true
+            return calculateMoves([row, col], directions, repeated, board)
         case "Q": // Queens
-            const queenDirections = [
+            directions = [
                 [1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]
             ]
-            const queenRepeated = true
-            return calculateMoves([row, col], queenDirections, queenRepeated, board)
+            repeated = true
+            return calculateMoves([row, col], directions, repeated, board)
         case "K": // Kings
-            const kingDirections = [
+            directions = [
                 [1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]
             ]
-            const kingRepeated = false
-            return calculateMoves([row, col], kingDirections, kingRepeated, board)
+            repeated = false
+            return calculateMoves([row, col], directions, repeated, board)
         default:
             return []
     }
@@ -160,24 +208,47 @@ const calculateMoves = (startPosition, directions, repeated, board) => {
 const getPawnMoves = (startPosition, board) => {
     const [startRow, startCol] = startPosition
     const validMoves = []
-    var direction = null
-    const pawnColour = board.checkTile(startRow,startCol).colour
-    if (pawnColour === "w") {
-        direction = -1
-    } else {
-        direction = 1
-    }
-    let currentCol = startCol + direction
-    let targetPiece = board.checkTile(startRow, currentCol)
-    if (!targetPiece && startRow >=0 && startRow <= 7 && currentCol >= 0 && currentCol <= 7) {
-        validMoves.push([startRow, currentCol])
-        if ((pawnColour === "w" && startRow === 6) || (pawnColour === "b" && startRow === 1)) {
-            currentCol += direction
-            
+
+    const pawn = board.checkTile(startRow, startCol)
+    
+    const direction = pawn.colour === "w" ? -1 : 1
+    const startRank = pawn.colour === "w" ? 6 : 1
+    // single forward moves
+    let currentRow = startRow + direction
+    let targetPiece = board.checkTile(currentRow, startCol)
+    if (currentRow >=0 && currentRow <= 7 && !targetPiece) {
+        validMoves.push([currentRow, startCol])
+        // double forward moves
+        if (startRow === startRank && !targetPiece) {
+            currentRow += direction
+            targetPiece = board.checkTile(currentRow, startCol)
+            if (!targetPiece) {
+                validMoves.push([currentRow, startCol])
+            }
         }
     }
-    
+    // pawn attacks
+    const attackDirections = [
+        [direction, 1], [direction, -1]
+    ]
+    for (let attackDirection of attackDirections) {
+        let [attackRow, attackCol] = attackDirection
+        const captureRow = startRow + attackRow
+        const captureCol = startCol + attackCol
+
+        if (captureRow >=0 && captureRow <= 7 && captureCol >= 0 && captureCol <= 7) {
+            const targetPiece = board.checkTile(captureRow, captureCol)
+            if (targetPiece && targetPiece.colour !== pawn.colour) {
+                validMoves.push([captureRow, captureCol])
+            }
+        }
+    }
+
+    return validMoves
 }
+
+
+
 
 const chessUtilities = {
     createBoard, 

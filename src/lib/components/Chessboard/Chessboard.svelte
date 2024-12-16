@@ -38,10 +38,24 @@
         const endPosition = [rowIdx, colIdx]
         const startPosition = JSON.parse(event.dataTransfer.getData("text/plain"))
         Board.movePiece(startPosition, endPosition)
+        highlightedTiles = []
         Board.tiles = [...Board.tiles]
 
     }
+
+    function takeBackMove() {
+        Board.takeBack()
+        Board.tiles = [...Board.tiles]
+    }
+
 </script>
+
+<div class="controls">
+    <button on:click={takeBackMove}>
+        Take back previous move
+    </button>
+</div>
+
 
 <table>
     {#each Board.tiles as row, rowIdx}
@@ -109,6 +123,18 @@
 </table>
 
 <style>
+    .controls {
+        margin-bottom: 10px;
+    }
+    .controls button {
+        padding: 8px 12px;
+        font-size: 50px;
+        cursor: pointer;
+        background-color: antiquewhite;
+        color: black;
+    }
+
+
     table {
         width: 100%;
         aspect-ratio: 1/1;
