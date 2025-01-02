@@ -66,7 +66,7 @@
                     on:dragover={(event) => event.preventDefault()}
                     on:drop={(event) => handleDrop(event, rowIdx, colIdx)}
                 >   
-                    {#if highlightedTiles.some(rowIdx, colIdx)}
+                    {#if highlightedTiles.some(([r, c]) => r === rowIdx && c === colIdx)}
                         <div class="highlight-circle"></div>
                     {/if}
 
